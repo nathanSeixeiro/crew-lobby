@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-label="Crew Lobby">
+  <path d="M3.5 19.5V11a6.5 6.5 0 0 1 13 0v8.5l-2.2-1.9-2.1 1.9-2.2-1.9-2.2 1.9-2.1-1.9-2.2 1.9z" stroke="#737A8C" stroke-width="1.5" stroke-linejoin="round"/>
+  <circle cx="8" cy="11.5" r="1.05" fill="#737A8C"/>
+  <circle cx="12" cy="11.5" r="1.05" fill="#737A8C"/>
+  <circle cx="19.3" cy="5.2" r="2.3" fill="#00D492"/>
+</svg>

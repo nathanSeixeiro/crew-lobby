@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crew Lobby · preview</title>
+  <style>
+    /* Theme tokens copied from the Kiro Crew dashboard CSS (default dark + light). */
+    :root, [data-theme=dark] { --bg:#12141a; --bg-elevated:#1a1d25; --bg-hover:#262a35; --card:#181b22; --text:#e4e4e7; --text-strong:#fafafa;
+      --muted:#7f7f88; --muted-strong:#52525b; --border:#27272a; --border-strong:#3f3f46; --accent:#00d492; --accent-subtle:#04755833;
+      --ok:#22c55e; --warn:#eab308; --danger:#ef4444; --info:#0891b2; --aim:#a78bfa; --aim-subtle:#a78bfa26; color-scheme:dark; }
+    [data-theme=light] { --bg:#fafafa; --bg-elevated:#fff; --bg-hover:#f0f0f0; --card:#fff; --text:#3f3f46; --text-strong:#18181b;
+      --muted:#71717a; --muted-strong:#52525b; --border:#e4e4e7; --border-strong:#d4d4d8; --accent:#047558; --accent-subtle:#0475581f;
+      --ok:#16a34a; --warn:#a16207; --danger:#dc2626; --info:#0891b2; --aim:#7c3aed; --aim-subtle:#7c3aed1f; color-scheme:light; }
+    html, body { margin:0; height:100%; background:var(--bg); color:var(--text);
+      font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif; }
+    #root { height:100%; }
+    .boot { color:var(--muted); padding:24px; }
+    .pv-shell { display:grid; grid-template-columns:64px minmax(0,1fr); height:100vh; }
+    .pv-rail { display:flex; flex-direction:column; align-items:center; gap:18px; padding:14px 0; background:var(--bg-elevated); border-right:1px solid var(--border); }
+    .pv-logo { width:38px; height:38px; border-radius:12px; display:grid; place-items:center; color:#fff;
+      background:linear-gradient(140deg, var(--aim), color-mix(in srgb, var(--aim) 40%, var(--accent))); }
+    .pv-nav, .pv-rail-foot { display:flex; flex-direction:column; align-items:center; gap:6px; }
+    .pv-rail-foot { margin-top:auto; gap:12px; }
+    .pv-item { position:relative; width:40px; height:40px; border-radius:11px; display:grid; place-items:center; color:var(--muted); }
+    .pv-item:hover { background:var(--bg-hover); color:var(--text); }
+    .pv-item.is-active { color:var(--text-strong); background:var(--bg-hover); box-shadow:inset 3px 0 0 var(--accent); }
+    .pv-badge { position:absolute; top:1px; right:-2px; min-width:17px; height:17px; padding:0 4px; border-radius:999px; display:grid; place-items:center;
+      font-size:10px; font-weight:700; color:#12141a; background:var(--warn); border:2px solid var(--bg-elevated); }
+    .pv-me { width:32px; height:32px; border-radius:50%; display:grid; place-items:center; font-size:13px; font-weight:700; color:#fff; background:#21a5de; }
+    .pv-main { min-width:0; height:100vh; overflow:hidden; background:var(--bg); }
+    .pv-tag { margin-top:-10px; padding:1px 6px; border-radius:6px; font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      color:var(--aim); background:var(--aim-subtle); }
+    button.pv-item, a.pv-item { border:0; background:transparent; font:inherit; font-size:11px; font-weight:700; text-decoration:none; cursor:pointer; }
+    #toasts { position:fixed; right:18px; bottom:18px; z-index:30; display:flex; flex-direction:column; gap:10px; }
+    .toast { position:relative; overflow:hidden; display:flex; gap:10px; align-items:flex-start; min-width:280px; max-width:380px; padding:12px 14px 14px;
+      border-radius:12px; font-size:13px; color:var(--text); background:color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+      backdrop-filter:blur(12px); border:1px solid var(--border-strong); box-shadow:0 18px 40px -12px rgba(0,0,0,.45);
+      animation:toast-in .3s cubic-bezier(.2,.7,.2,1); transition:opacity .35s, transform .35s; }
+    .toast.out { opacity:0; transform:translateY(6px); }
+    .toast::before { content:''; flex:none; width:8px; height:8px; margin-top:5px; border-radius:50%; background:var(--t);
+      box-shadow:0 0 0 4px color-mix(in srgb, var(--t) 22%, transparent); }
+    .toast::after { content:''; position:absolute; left:0; bottom:0; height:2px; background:var(--t); animation:toast-life 4.4s linear forwards; }
+    .toast.info { --t:var(--aim); } .toast.success { --t:var(--accent); } .toast.error { --t:var(--danger); }
+    @keyframes toast-in { from { opacity:0; transform:translateY(10px) scale(.98); } to { opacity:1; transform:none; } }
+    @keyframes toast-life { from { width:100%; } to { width:0; } }
+  </style>
+  <!-- Preview only: React and lucide-react come from esm.sh. Inside Kiro Crew the app uses the host's copies. -->
+  <script type="importmap">
+    { "imports": {
+      "react": "https://esm.sh/react@18.3.1",
+      "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+      "lucide-react": "https://esm.sh/lucide-react@0.460.0?external=react"
+    } }
+  </script>
+</head>
+<body>
+  <div id="root"><p class="boot">Carregando React do esm.sh… Sem internet o preview não sobe; dentro da Crew o app usa o React do host.</p></div>
+  <div id="toasts"></div>
+  <script type="module">
+    const params = new URLSearchParams(location.search)
+    document.documentElement.dataset.theme = params.get('theme') === 'light' ? 'light' : 'dark'
+    // The mock re-anchors its clock on every load, so "seen" marks from an earlier load would turn
+    // every session unread. Start each load with everything read, like a first visit (preview only).
+    localStorage.removeItem('crew-lobby:seen:v1')
+    // ?view=list opens the list view (seeds the app's own prefs key; preview only).
+    if (params.get('view') === 'list' || params.get('view') === 'room') {
+      const key = 'crew-lobby:prefs:v1'
+      let prefs = {}
+      try { prefs = JSON.parse(localStorage.getItem(key) || '{}') } catch { prefs = {} }
+      localStorage.setItem(key, JSON.stringify({ ...prefs, view: params.get('view') }))
+    }
+    const React = await import('react')
+    const { createRoot } = await import('react-dom/client')
+    const lucide = await import('lucide-react')
+    const { createMockSdk } = await import('/mock-sdk.mjs')
+    window.__kirocrew_modules = { react: React, 'lucide-react': lucide, '@kirocrew/app-sdk': createMockSdk() }
+    const { default: CrewLobby } = await import('/app/index.mjs')
+    const { mountPreview } = await import('/shell.mjs')
+    mountPreview({ React, createRoot, lucide, App: CrewLobby, root: document.getElementById('root') })
+    // ?peek=1 opens "Espiar" on the desk waiting for approval (used for the store screenshots).
+    if (params.get('peek') === '1') {
+      const tryPeek = (left) => {
+        const button = document.querySelector('.cl-desk.cl-st-approval [data-peek]')
+        if (button) button.click()
+        else if (left > 0) setTimeout(() => tryPeek(left - 1), 300)
+      }
+      setTimeout(() => tryPeek(20), 800)
+    }
+  </script>
+</body>
+</html>

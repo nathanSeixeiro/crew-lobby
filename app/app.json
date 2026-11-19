@@ -1,0 +1,68 @@
+{
+  "name": "crew-lobby",
+  "version": "0.5.0",
+  "displayName": "Crew Lobby",
+  "description": "Uma sala para acompanhar seus crewmates. Cada colega ganha uma mesa com presença (online, ausente ou offline), o que está fazendo agora e se espera sua aprovação, uma resposta ou uma nova instrução. Dá para aprovar ou negar um pedido ali mesmo e espiar a sessão sem sair do lobby: o comando pedido, o plano e a última mensagem. O que terminou enquanto você estava fora fica marcado como não lido, e um clique abre a sessão.",
+  "author": "Nathan Seixeiro",
+  "license": "MIT",
+  "tags": [
+    "agents",
+    "overview",
+    "presence"
+  ],
+  "iconPath": "assets/icon.svg",
+  "highlights": [
+    "Uma mesa por colega, com presença, atividade atual e há quanto tempo está naquele estado",
+    "\"Precisa de você\" no topo: aprovações pendentes, perguntas e turnos interrompidos",
+    "Não lido para cada resposta que chegou desde a última vez que você olhou",
+    "Abrir sessão com um clique, busca, filtros e visão em Sala ou Lista",
+    "Segue o tema da Crew, claro ou escuro, em português ou inglês",
+    "Aprovar ou negar um pedido de ferramenta direto na mesa, com o comando à vista",
+    "Espiar a sessão sem sair do lobby: pedido, plano, opções e a última resposta completa"
+  ],
+  "screenshots": [
+    "assets/screenshots/01-sala.png",
+    "assets/screenshots/02-espiar.png",
+    "assets/screenshots/03-lista.png"
+  ],
+  "useCases": [
+    "Acompanhar várias sessões e crewmates em paralelo sem abrir uma por uma.",
+    "Ver de relance quem espera sua aprovação ou resposta e o que terminou enquanto você estava fora.",
+    "Liberar o comando que um agente está esperando sem abrir a conversa."
+  ],
+  "configuration": [
+    "Ative em Apps e confirme a confiança no app. A Crew também pede para você aceitar que o app controle seus chats: ele usa isso só para Aprovar ou Negar quando você clica.",
+    "Não precisa de credencial nem de serviço externo."
+  ],
+  "defaultEnabled": false,
+  "permissions": {
+    "api": [
+      "/api/chat/slots",
+      "/api/agents"
+    ],
+    "sessionApproval": true
+  },
+  "backend": {
+    "hooks": {
+      "routes": "backend.routes:register_routes"
+    }
+  },
+  "ui": {
+    "entry": "index.mjs",
+    "pages": [
+      {
+        "route": "/crew-lobby",
+        "label": "Crew Lobby",
+        "icon": "Users",
+        "iconUrl": "icon.svg"
+      }
+    ]
+  },
+  "platform": {
+    "os": [
+      "macos",
+      "linux",
+      "windows"
+    ]
+  }
+}
